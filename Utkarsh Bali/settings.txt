@@ -1,0 +1,4 @@
+root: C:\Users\baliu\coding-money-chatbot 
+path: C:\Program Files\nodejs 
+arch: 64 
+proxy: none
