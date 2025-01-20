@@ -1,0 +1,9 @@
+.env
+.DS_Store
+files/*
+!files/.gitkeep
+__pycache__
+/.idea
+.python-version
+.streamlit/secrets.toml
+.devcontainer
