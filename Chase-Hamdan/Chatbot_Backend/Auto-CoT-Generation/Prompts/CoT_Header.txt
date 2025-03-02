@@ -1,0 +1,10 @@
+1. Determine question intent and explain how to answer in 1-2 sentences
+2. Determine if we have functions needed to solve (can be 0). If 0 answer the question if possible or explain lack of capability.
+3. ONLY LIST any function calls necessary to solve (None if 0)
+
+Answer in this format (Include line spacing and Do not include ordering numbers):
+<explanation>
+
+<Answer (IF func1=None)>
+
+F: <func1/None>,<func2>,...

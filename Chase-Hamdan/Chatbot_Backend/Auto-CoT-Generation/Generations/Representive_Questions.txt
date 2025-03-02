@@ -1,0 +1,8 @@
+Can we improve accuracy with feature engineering?
+Can I see the dataset itself?
+Is a high F1 score always good?
+How does the dataset size affect KNN?
+How well does the model classify flowers?
+Can you explain what a recall score means in this context?
+What’s the easiest way to visualize feature importance?
+Can you give me the precision of the model?
