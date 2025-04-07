@@ -1,1 +1,236 @@
-[{"type": "function", "function": {"name": "calculate_accuracy", "description": "Function to calculate accuracy score", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_f1", "description": "Function to calculate F1 score", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_mean", "description": "Function to calculate the mean of the dataset", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_median", "description": "Function to calculate the median of the dataset", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_mode", "description": "Function to calculate the mode of the dataset", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_precision", "description": "Function to calculate precision score", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_recall", "description": "Function to calculate recall score", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_roc_auc", "description": "Function to calculate AUC-ROC score", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_std", "description": "Function to calculate the standard deviation of the dataset", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "calculate_variance", "description": "Function to calculate the variance of the dataset", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "generate_confusion_matrix", "description": "Function to generate confusion matrix", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "shap_force_plot", "description": "Generate a SHAP force plot to visualize the contribution of individual features for a specific prediction.", "parameters": {"type": "object", "properties": {}, "required": []}}}, {"type": "function", "function": {"name": "shap_summary_plot", "description": "Generate a SHAP summary plot to visualize feature importance and the impact of each feature on model predictions.", "parameters": {"type": "object", "properties": {}, "required": []}}}]
+[
+  {
+    "type": "function",
+    "function": {
+      "description": "Get the first few rows of the dataset to inspect formatting. Returns str: The first 5 rows of the dataset.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "name": "data_header",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Get summary statistics of the dataset including count, mean, standard deviation, min, first quartile, median, third quartile, and max for each feature. Optionally specify a species to only include data for that species Returns str: Statistical description of all numerical features.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "species": {
+            "type": "string",
+            "enum": [
+              "setosa",
+              "versicolor",
+              "virginica",
+              "null"
+            ],
+            "description": "Optionally filter the data to only include this species."
+          }
+        },
+        "required": [
+          "species"
+        ],
+        "additionalProperties": false
+      },
+      "name": "describe_data",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Get the accuracy score of the model on the dataset. Returns str: Accuracy as a float.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "name": "get_accuracy_score",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Get the classification report for model predictions. Returns str: Text summary of precision, recall, F1-score per class.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "name": "get_classification_report",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Get the confusion matrix of the model's predictions. Returns str: String representation of the confusion matrix.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "name": "get_confusion_matrix",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Get the list of feature names used in the dataset. Returns str: A stringified list of feature names.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "name": "get_feature_names",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Get the list of unique flower species in the dataset. Returns str: A stringified list of flower species.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "name": "get_flower_types",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Plot a histogram or boxplot for a given feature, optionally filtered by species. Returns None",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "feature": {
+            "type": "string",
+            "enum": [
+              "sepal length (cm)",
+              "sepal width (cm)",
+              "petal length (cm)",
+              "petal width (cm)"
+            ],
+            "description": "The feature to visualize."
+          },
+          "separate_species": {
+            "type": "boolean",
+            "description": "Whether to color plots by species."
+          },
+          "plot_type": {
+            "type": "string",
+            "enum": [
+              "histogram",
+              "boxplot"
+            ],
+            "description": "Type of plot ('histogram' or 'boxplot')."
+          }
+        },
+        "required": [
+          "feature",
+          "separate_species",
+          "plot_type"
+        ],
+        "additionalProperties": false
+      },
+      "name": "plot_descriptive",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Predict the species of an iris flower given its features, optionally with SHAP explanation for feature importance if specified. Returns str: Predicted species and confidence score, plus SHAP values if requested.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sepal_length": {
+            "type": "number",
+            "description": "Sepal length in cm."
+          },
+          "sepal_width": {
+            "type": "number",
+            "description": "Sepal width in cm."
+          },
+          "petal_length": {
+            "type": "number",
+            "description": "Petal length in cm."
+          },
+          "petal_width": {
+            "type": "number",
+            "description": "Petal width in cm."
+          },
+          "feature_importance": {
+            "type": "boolean",
+            "description": "Whether to calculate SHAP feature importance values and show visualization."
+          }
+        },
+        "required": [
+          "sepal_length",
+          "sepal_width",
+          "petal_length",
+          "petal_width",
+          "feature_importance"
+        ],
+        "additionalProperties": false
+      },
+      "name": "predict",
+      "strict": true
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "description": "Plot global SHAP feature importances for the model and return SHAP values for each feature, \n        either for a specific species or for all species. Returns str: A string summary of SHAP values for the specified species or all species, \n                with feature importance values for each feature.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "species": {
+            "type": "string",
+            "enum": [
+              "setosa",
+              "versicolor",
+              "virginica",
+              "null"
+            ],
+            "description": "Species name to filter the SHAP explanation (e.g., 'setosa'). If not provided, SHAP values for all species will be plotted."
+          },
+          "explanation_needed": {
+            "type": "boolean",
+            "description": "Whether to generate and display the SHAP explanation. Default is True."
+          },
+          "plot_type": {
+            "type": "string",
+            "enum": [
+              "bar",
+              "beeswarm"
+            ],
+            "description": "Type of SHAP plot ('bar' or 'beeswarm'). Default is 'bar'."
+          }
+        },
+        "required": [
+          "species",
+          "explanation_needed",
+          "plot_type"
+        ],
+        "additionalProperties": false
+      },
+      "name": "shap_feature_importance",
+      "strict": true
+    }
+  }
+]

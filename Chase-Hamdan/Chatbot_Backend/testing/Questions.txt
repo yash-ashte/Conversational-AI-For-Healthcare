@@ -1,0 +1,15 @@
+What is the mean and standard deviation of sepal length in the Iris dataset?
+What are the average petal lengths for each species in the Iris dataset?
+Classify this sample: sepal length 6.1, sepal width 2.8, petal length 4.7, petal width 1.2.
+What would happen to the classification if we increased petal width by 0.5 cm?
+Which two species are most similar based on sepal dimensions?
+How accurate is the current KNN model on the test data?
+What features influenced the decision the most in this case?
+Explain why petal length is more important than sepal width for distinguishing species.
+Give me a list of mean values for each feature — as a compact table.
+Answer this in under 50 words: which feature is most useful for classification and why?
+What would happen if petal length and width were swapped in all samples? Would accuracy increase or decrease?
+What's the overall accuracy of the model? Just the number.
+How would the classification change if petal length was increased by 2 cm while all other features remained the same?
+If a flower is classified as Setosa, what are the most common sepal and petal dimensions for this class? What does that imply about its placement in feature space?
+Tell me which sample in the dataset is hardest to classify, and explain why it’s ambiguous.

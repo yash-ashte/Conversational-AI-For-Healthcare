@@ -6,12 +6,14 @@ import axios from 'axios';
 export default function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);  // Track if the chatbot is processing the request
   const messagesEndRef = useRef(null);
 
   // Handle message submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessages([...messages, { text: userInput, sender: "user" }]);
+    setIsLoading(true);  // Set loading to true when request is made
     await processChatbotResponse(userInput);
     setUserInput("");
   };
@@ -21,14 +23,12 @@ export default function Chatbot() {
     try {
       const response = await axios.post('http://127.0.0.1:5000/chat', { input: input });
 
-      if (response.data.plot) {
-        // If there's a SHAP plot, include it in the response
+      if (response.data.plots && response.data.plots.length > 0) {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: response.data.response, sender: "bot", plot: response.data.plot },
+          { text: response.data.response, sender: "bot", plots: response.data.plots },
         ]);
       } else {
-        // Otherwise, just a text response
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: response.data.response, sender: "bot" },
@@ -40,6 +40,8 @@ export default function Chatbot() {
         ...prevMessages,
         { text: "Sorry, there was an error connecting to the backend.", sender: "bot" },
       ]);
+    } finally {
+      setIsLoading(false);  // Set loading to false after the response is processed
     }
   };
 
@@ -50,22 +52,27 @@ export default function Chatbot() {
 
   return (
     <div className="chat-container">
-      <h1 className="chat-title">Conversational Healthcare Chatbot</h1>
+      <h1 className="chat-title">Iris Data Classification Chatbot</h1>
       <div className="chatbox">
         {messages.map((msg, idx) => (
           <div key={idx} className={`message ${msg.sender === "bot" ? "bot-message" : "user-message"}`}>
-            {/* Use dangerouslySetInnerHTML to render HTML */}
             <p dangerouslySetInnerHTML={{ __html: msg.text }} />
-            {msg.plot && (
-              <iframe 
-                src={`http://127.0.0.1:5000/get_plot/${msg.plot}`} 
-                width="100%" 
-                height="500px"
-                title="SHAP Plot"
-              ></iframe>
-            )}
+            {msg.plots && msg.plots.map((plot, i) => (
+              <img
+                key={i}
+                src={plot}
+                alt={`SHAP plot ${i + 1}`}
+                style={{ maxWidth: "100%", objectFit: "contain", marginTop: "10px", borderRadius: "8px" }}
+              />
+            ))}
           </div>
         ))}
+        {isLoading && (
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <p>Loading...</p>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSubmit} className="input-form">
@@ -125,7 +132,6 @@ export default function Chatbot() {
           overflow-wrap: break-word;
         }
 
-
         /* Scrollbar styling */
         .chatbox::-webkit-scrollbar {
           width: 8px;  /* Width of the scrollbar */
@@ -155,31 +161,22 @@ export default function Chatbot() {
           display: inline-block;
           background-color: #333;
           color: #f1f1f1;
-          
           padding: 10px;
           border-radius: 8px;
           margin-bottom: 10px;
           max-width: 100%; /* Set a max width */
           font-family: 'Roboto', sans-serif;
-
         }
-
-        pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-        }
-
-
 
         .user-message {
-          display: inline-block;  /* Makes the message box only as wide as the content inside */
+          display: inline-block;
           padding: 10px;
           background-color: #4a90e2;
           color: #ffffff;
-          text-align: right;  /* Right-align the text inside the message box */
+          text-align: right;
           border-radius: 8px;
-          min-width: 40%;  /* Optional: Set a maximum width so it doesn't stretch too wide */
-          align-self: flex-end;  /* Right-align the message box to the container */
+          min-width: 40%;
+          align-self: flex-end;
           font-family: 'Roboto', sans-serif;
         }
 
@@ -213,6 +210,28 @@ export default function Chatbot() {
           background-color: #357ab7;
         }
 
+        /* Loading spinner styles */
+        .loading-spinner {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          margin-top: 20px;
+        }
+
+        .spinner {
+          border: 4px solid #f3f3f3;  /* Light grey background */
+          border-top: 4px solid #3498db;  /* Blue spinner */
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
       `}</style>
     </div>
   );
